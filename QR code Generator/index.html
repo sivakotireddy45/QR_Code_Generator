@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg-color: #342d34;
+            --text-color: white;
+            --input-bg: #3b4148;
+            --input-hover: #434a52;
+            --btn-color: #d75821;
+            --btn-hover: #c64a18;
+            --border-radius: 0.4rem;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background-color: #2c2c2f;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 300px;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        select,
+        textarea,
+        input[type="submit"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        select:hover,
+        textarea:hover {
+            background-color: var(--input-hover);
+        }
+
+        input[type="submit"] {
+            background-color: var(--btn-color);
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: var(--btn-hover);
+        }
+
+        img {
+            margin: 1rem 0;
+            max-width: 100%;
+            border: 2px solid #555;
+            border-radius: var(--border-radius);
+        }
+
+        p {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>QR Code Generator</h2>
+        <img id="img" src="" alt="">
+        <select id="size">
+            <option value="100">100x100</option>
+            <option value="150">150x150</option>
+            <option value="200">200x200</option>
+            <option value="250" selected>250x250</option>
+            <option value="300">300x300</option>
+        </select>
+        <textarea id="qrtext" rows="3" placeholder="Enter your text here"></textarea>
+        <input type="submit" value="Generate" onclick="genQR()">
+        <p>Developed By SIVAKOTIREDDY</p>
+    </div>
+
+    <script>
+        function genQR() {
+            const img = document.getElementById("img");
+            const text = document.getElementById("qrtext").value.trim();
+            const size = document.getElementById("size").value;
+
+            if (text !== "") {
+                const url = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
+                img.src = url;
+            } else {
+                alert("Please enter text to generate QR code.");
+            }
+        }
+    </script>
+</body>
+
+</html>
