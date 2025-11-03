@@ -1,29 +1,40 @@
-<script type="text/javascript">
-        function genQR() {
-            var gapi = "http://chart.apis.google.com/chart?chf=bg,s,65432100&cht=qr&chs=";
-;
-            var myimg = document.getElementById("img");
-            var mytext = document.getElementById("qrtext").value;
-            var mysize = document.getElementById("size").value;
+const generateBtn = document.getElementById("generate-btn");
+const textInput = document.getElementById("text-input");
+const qrBox = document.getElementById("qr-box");
+const qrCodeDiv = document.getElementById("qrcode");
+const downloadBtn = document.getElementById("download-btn");
 
-            if (mytext !== "" && mysize == "100") {
-                myimg.src = gapi + "100x100" + "&chl=" + mytext;
-                //http://chart.apis.google.com/chart?cht=qr&chs=100x100&chl=hello
-            }
-            else if (mytext !== "" && mysize == "150") {
-                myimg.src = gapi + "150x150" + "&chl=" + mytext;
-            }
-            else if (mytext !== "" && mysize == "200") {
-                myimg.src = gapi + "200x200" + "&chl=" + mytext;
-            }
-            else if (mytext !== "" && mysize == "250") {
-                myimg.src = gapi + "250x250" + "&chl=" + mytext;
-            }
-            else if (mytext !== "" && mysize == "300") {
-                myimg.src = gapi + "300x300" + "&chl=" + mytext;
-            }
-            else {
-                alert("Please Enter text");
-            }
-        }
-    </script>
+let qr;
+
+generateBtn.addEventListener("click", () => {
+  const text = textInput.value.trim();
+  if (!text) {
+    alert("Please enter some text or a link!");
+    return;
+  }
+
+  qrBox.classList.remove("hidden");
+  qrCodeDiv.innerHTML = ""; // Clear old QR
+
+  qr = new QRCode(qrCodeDiv, {
+    text: text,
+    width: 200,
+    height: 200,
+    colorDark: "#ffffff",
+    colorLight: "transparent",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+});
+
+// Download QR Code as image
+downloadBtn.addEventListener("click", () => {
+  const qrCanvas = qrCodeDiv.querySelector("canvas");
+  if (qrCanvas) {
+    const link = document.createElement("a");
+    link.download = "QRCode.png";
+    link.href = qrCanvas.toDataURL("image/png");
+    link.click();
+  } else {
+    alert("Please generate a QR code first!");
+  }
+});
